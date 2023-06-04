@@ -57,6 +57,32 @@ fig1 = sns.regplot(data=y_pred_true_phm2, x="phoma_at_harvest", y='predicted')
 fig1.set_title('Lasso Regression', fontsize=15)
 fig1.set_xlabel('Actual')
 fig1.set_ylabel('Predicted')
+#determine most important  features
+coefficients = clf_lasso.coef_
+
+importance = np.abs(coefficients)
+
+importance2  = pd.DataFrame(importance)
+columns_list = data_enc.columns.to_list()
+columns_df = pd.DataFrame(columns_list)
+col_and_imp = pd.merge(columns_df, importance2, left_index=True, right_index=True, how='inner')
+col_and_imp.rename(columns={ '0_x' : 'Variable', '0_y': 'Coefficient'}, inplace=True)
+col_and_imp.sort_values(by="Coefficient", ascending=False, inplace=True)
+col_and_imp2 = col_and_imp.set_index('Variable')
+
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure
+figure(num=None, figsize=(8, 8), dpi=300, facecolor='w', edgecolor='k')
+indexes = col_and_imp2.nlargest(20, "Coefficient").index
+values = col_and_imp2.nlargest(20, "Coefficient").values.ravel()
+indexes = indexes[::-1]
+values = values[::-1]
+plt.barh(indexes, values)
+plt.title('Lasso Regression SNP Importance', fontsize=15)
+plt.ylabel('SNP')
+plt.xlabel('Coefficient')
+plt.tight_layout()
+plt.savefig('file.png')
 
 #Support Vector Machine
 #import train
@@ -107,6 +133,26 @@ fig1 = sns.regplot(data=y_pred_true_phm2, x="phoma_at_harvest", y='predicted')
 fig1.set_title('Random Forest', fontsize=15)
 fig1.set_xlabel('Actual')
 fig1.set_ylabel('Predicted')
+#determine best features
+rand_importance = pd.DataFrame({'Variable':data_enc.columns,
+              'Importance':rand.feature_importances_}).sort_values('Importance', ascending=False)
+rand_importance2 = rand_importance.set_index('Variable')
+rand_importance2.head()
+rand_importance2 = rand_imp.set_index('Variable')
+rand_importance2.head()
+#figure
+figure(num=None, figsize=(8, 8), dpi=300, facecolor='w', edgecolor='k')
+indexes = rand_importance2.nlargest(20, "Importance").index
+values = rand_importance2.nlargest(20, "Importance").values.ravel()
+indexes = indexes[::-1]
+values = values[::-1]
+plt.barh(indexes, values)
+plt.title('Random Forest SNP Importance')
+plt.ylabel('SNP')
+plt.xlabel('Feature Importance')
+plt.tight_layout()
+plt.savefig('file.png')
+
 
 #Decision Tree Regressor
 #import and train
