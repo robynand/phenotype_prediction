@@ -2,9 +2,8 @@
 
 Summary of code used in PhD  project for phenotype prediction.
  
- 
- #simple models
+ # Simple models
  Contains code used to import, train and evaluate, Lasso Regression, Ridge Regression, Suport Vector Machine, Random Forest and Decision Tree. 
  
- #XGBoost Optimisation
+ # XGBoost Optimisation
  contains code for xgboost optimisatoin, training and testing and evaluation.
