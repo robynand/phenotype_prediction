@@ -1,5 +1,4 @@
-# phenotype_prediction
-
+# Phenotype Prediction
 Summary of code used in PhD  project for phenotype prediction.
  
  # Simple models
